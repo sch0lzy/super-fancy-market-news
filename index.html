@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Super Fancy Market News Tool</title>
+    <meta
+      name="description"
+      content="Finnhub company-news scanner with sentiment/topic chips, article summarization, and Reddit trending tickers via Worker."
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        script-src 'self';
+        style-src 'self';
+        img-src 'self' data:;
+        connect-src 'self' https://finnhub.io https://summarizev3.451jscholz.workers.dev;
+        frame-ancestors 'none';
+      "
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div>
+          <h1>Super Fancy Market News Tool</h1>
+          <div class="sub">Finnhub free api if you dont have one - d473qopr01qh8nnb0j30d473qopr01qh8nnb0j3g</div>
+        </div>
+      </header>
+
+      <div id="banner" class="banner"></div>
+
+      <!-- SETTINGS -->
+      <section class="card">
+        <div class="row">
+          <label for="keyFinnhub">Finnhub API key</label>
+          <input
+            id="keyFinnhub"
+            class="key"
+            type="password"
+            placeholder="Finnhub token (e.g., c123…)"
+          />
+          <button id="btnSave">Save</button>
+          <span class="pill" id="pillKey">Not saved</span>
+          <button id="btnTest" title="Test this key">Test</button>
+        </div>
+        <div class="toolbar small">
+          <strong>Privacy:</strong>
+          The key is stored only in <em>this browser</em> and sent directly to Finnhub.
+        </div>
+      </section>
+
+      <!-- SEARCH -->
+      <section class="card" aria-label="Search">
+        <div class="row">
+          <label for="ticker">Ticker</label>
+          <input id="ticker" type="text" placeholder="Try: NVDA, MSFT, AAPL" />
+          <button id="btnStart">
+            <span class="spinner" id="spin" style="display:none"></span>
+            Search
+          </button>
+          <button id="btnCancel" class="ghost" disabled>Cancel</button>
+          <span class="right small sub" id="count"></span>
+        </div>
+        <div class="toolbar">
+          <label for="sort">Sort</label>
+          <select id="sort">
+            <option value="relevance">Relevance</option>
+            <option value="time">Newest</option>
+            <option value="impact">Impact score</option>
+          </select>
+          <label for="dedupe">De-dupe</label>
+          <select id="dedupe">
+            <option value="url">By URL</option>
+            <option value="title">By Title+Source</option>
+            <option value="off">Off</option>
+          </select>
+          <label for="maxResults">Max results</label>
+          <select id="maxResults">
+            <option>20</option>
+            <option>50</option>
+            <option selected>100</option>
+            <option>200</option>
+          </select>
+          <label for="daysBack">Days back</label>
+          <select id="daysBack">
+            <option value="1">1</option>
+            <option value="7" selected>7</option>
+            <option value="14">14</option>
+            <option value="30">30</option>
+            <option value="90">90</option>
+          </select>
+        </div>
+        <div id="status" class="status sub" aria-live="polite"></div>
+        <details class="logs">
+          <summary>Status details</summary>
+          <div id="log" class="small"></div>
+        </details>
+        <div id="results" class="results" role="list"></div>
+        <div class="toolbar small">
+          Tip: Press <span class="kbd">Enter</span> to search. Company news requires a <strong>ticker</strong>.
+        </div>
+      </section>
+
+      <!-- REDDIT TRENDING -->
+      <section class="card" aria-label="Reddit Trending">
+        <div class="row">
+          <strong style="font-size:16px">Reddit Trending (past 24h)</strong>
+          <span class="pill">Most-mentioned tickers on stock subreddits</span>
+          <span class="right"></span>
+        </div>
+        <div class="toolbar">
+          <label for="trendFilter">Filter</label>
+          <select id="trendFilter" title="Pick scope">
+            <option value="all-stocks" selected>Popular subreddits</option>
+            <option value="stocks">r/stocks</option>
+            <option value="wallstreetbets">r/wallstreetbets</option>
+            <option value="investing">r/investing</option>
+            <option value="options">r/options</option>
+          </select>
+          <label for="trendLimit">Show</label>
+          <select id="trendLimit">
+            <option>10</option>
+            <option selected>25</option>
+            <option>50</option>
+          </select>
+          <button id="btnTrending">
+            <span class="spinner" id="spinTrend" style="display:none"></span>
+            Load Reddit Trending
+          </button>
+        </div>
+        <div id="trendStatus" class="status sub"></div>
+        <div id="trendSource" class="pill" style="margin-top:8px;display:none"></div>
+        <div id="trendList" style="display:grid;gap:8px;margin-top:10px"></div>
+        <div class="small sub">Source: <span id="trendSourceLabel">Loading...</span></div>
+      </section>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
