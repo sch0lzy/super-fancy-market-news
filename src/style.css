@@ -68,6 +68,13 @@ details.logs{margin-top:10px}
   input[type=text],input[type=password],select,button{width:100%;max-width:100%}
   .key{min-width:0;width:100%}
 
-  .trend-grid,
-  .trend-row{grid-template-columns:1fr 1fr}
+  /* Reddit trending: use stacked cards on mobile */
+  .trend-grid.trend-header{display:none}
+  .trend-row{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .trend-row > div{font-size:13px}
+  .trend-actions button{width:100%}
 }
